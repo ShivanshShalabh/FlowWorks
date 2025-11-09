@@ -53,7 +53,7 @@ export default function DebugSection({
         Debug Workflow
       </h3>
       <p className="text-gray-400 text-sm mb-4">
-        Found an issue? Describe what needs to be fixed and we'll generate an
+        Found an issue? Describe what needs to be fixed and we&apos;ll generate an
         updated version.
       </p>
       <form onSubmit={handleSubmit} className="space-y-4">
