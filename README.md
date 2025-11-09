@@ -1,6 +1,6 @@
 # FlowWorks
 
-An aesthetically beautiful, AI-powered tool that transforms natural language prompts into valid, copy-paste-able n8n workflow JSON.
+An AI-powered tool that transforms natural language prompts into valid, copy-paste-able n8n workflow JSON.
 
 ## The "Digital Sorcery" Experience
 
@@ -19,7 +19,6 @@ FlowWorks features a dark, elegant theme with smooth animations and a "magical" 
 - TypeScript
 - Tailwind CSS
 - Framer Motion
-- React Flow
 
 ### Backend
 
