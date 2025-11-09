@@ -183,8 +183,6 @@ def assemble_workflows(
         get_documentation_summary,
     )
 
-    model = genai.GenerativeModel("gemini-2.5-pro")
-
     # Load n8n documentation
     n8n_docs = load_n8n_documentation()
     knowledge_base = get_documentation_summary(n8n_docs, max_length=50000)
@@ -273,8 +271,27 @@ Otherwise, return the complete merged workflow JSON.
 
 Your response:"""
 
+    # Try with gemini-2.5-pro first, fallback to gemini-2.5-flash if it fails
+    models_to_try = ["gemini-2.5-pro", "gemini-2.5-flash"]
+    response = None
+    last_error = None
+
+    for model_name in models_to_try:
+        try:
+            model = genai.GenerativeModel(model_name)
+            response = model.generate_content(instruction)
+            print(f"Successfully used {model_name} for assemble_workflows")
+            break
+        except Exception as e:
+            last_error = e
+            print(f"Error with {model_name} in assemble_workflows: {e}")
+            if model_name == models_to_try[-1]:  # Last model failed
+                raise
+
+    if response is None:
+        raise Exception(f"All models failed. Last error: {last_error}")
+
     try:
-        response = model.generate_content(instruction)
 
         response_text = response.text.strip()
 
@@ -342,8 +359,6 @@ def debug_workflow(
         get_documentation_summary,
     )
 
-    model = genai.GenerativeModel("gemini-2.5-pro")
-
     # Load n8n documentation
     n8n_docs = load_n8n_documentation()
     knowledge_base = get_documentation_summary(n8n_docs, max_length=50000)
@@ -408,8 +423,28 @@ If the bug fix requires custom logic that standard nodes can't handle, use a Cod
 
 Respond only with the raw, corrected JSON object and nothing else."""
 
+    # Try with gemini-2.5-pro first, fallback to gemini-2.5-flash if it fails
+    models_to_try = ["gemini-2.5-pro", "gemini-2.5-flash"]
+    response = None
+    last_error = None
+
+    for model_name in models_to_try:
+        try:
+            model = genai.GenerativeModel(model_name)
+            response = model.generate_content(instruction)
+            print(f"Successfully used {model_name} for debug_workflow")
+            break
+        except Exception as e:
+            last_error = e
+            print(f"Error with {model_name} in debug_workflow: {e}")
+            if model_name == models_to_try[-1]:  # Last model failed
+                print(f"All models failed in debug_workflow. Last error: {last_error}")
+                return None
+
+    if response is None:
+        return None
+
     try:
-        response = model.generate_content(instruction)
 
         response_text = response.text.strip()
 
