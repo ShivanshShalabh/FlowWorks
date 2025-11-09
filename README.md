@@ -111,7 +111,6 @@ The API will be available at `http://localhost:8000`
 
 - **Natural Language Processing**: Describe workflows in plain English
 - **Real n8n Templates**: Fetches and modifies actual n8n workflow templates
-- **Live Visualization**: See your workflow graph rendered in real-time
 - **Copy-Paste Ready**: Get valid n8n JSON you can use immediately
 - **Keyboard Shortcuts**:
   - `Enter` to generate
@@ -143,15 +142,6 @@ The API will be available at `http://localhost:8000`
 │   └── requirements.txt  # Python dependencies
 └── package.json          # Node.js dependencies
 ```
-
-## Development
-
-The project follows a 4-phase development approach:
-
-1. **Phase 1**: Hollywood Frontend - Complete UI with mock data
-2. **Phase 2**: Live RAG Backend - Python backend with AI pipeline
-3. **Phase 3**: Integration - Connect frontend to backend
-4. **Phase 4**: Demo Polish - Final touches and extra features
 
 ## License
 
