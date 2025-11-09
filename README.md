@@ -130,7 +130,6 @@ The API will be available at `http://localhost:8000`
 │   └── globals.css        # Global styles
 ├── components/            # React components
 │   ├── Hero.tsx          # Hero section with prompt input
-│   ├── WorkflowVisualizer.tsx  # React Flow visualization
 │   ├── JsonViewer.tsx    # JSON display component
 │   └── DemoButton.tsx    # Demo button component
 ├── lib/                   # Utility functions

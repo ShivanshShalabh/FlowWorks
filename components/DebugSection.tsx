@@ -81,9 +81,10 @@ export default function DebugSection({
           disabled={!bugMessage.trim() || isDebugging || !currentWorkflow}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full px-6 py-3 bg-gradient-to-r from-sorcery-purple to-sorcery-blue 
+          className="w-full px-6 py-3 bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 
                    rounded-lg text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed
-                   hover:glow-border transition-all duration-300 flex items-center justify-center gap-2"
+                   shadow-[0_0_10px_rgba(236,72,153,0.4)] hover:shadow-[0_0_15px_rgba(236,72,153,0.6)] 
+                   transition-all duration-300 flex items-center justify-center gap-2"
         >
           {isDebugging ? (
             <>

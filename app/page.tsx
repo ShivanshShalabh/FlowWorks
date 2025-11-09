@@ -9,6 +9,7 @@ import VersionHistoryViewer from "@/components/VersionHistoryViewer";
 import DebugSection from "@/components/DebugSection";
 import { generateWorkflow, debugWorkflow, StatusUpdate } from "@/lib/api";
 import StatusDisplay from "@/components/StatusDisplay";
+import ParticleBackground from "@/components/ParticleBackground";
 
 type ViewState = "prompt" | "generating" | "results" | "error";
 
@@ -101,8 +102,11 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-sorcery-dark via-sorcery-darker to-sorcery-dark">
+      {/* Particle Background */}
+      <ParticleBackground />
+
       {/* Animated background gradient overlay */}
-      <div className="fixed inset-0 bg-gradient-to-br from-sorcery-purple/5 via-transparent to-sorcery-blue/5 pointer-events-none" />
+      <div className="fixed inset-0 bg-gradient-to-br from-sorcery-purple/5 via-transparent to-sorcery-blue/5 pointer-events-none z-[1]" />
 
       <div className="relative z-10">
         <AnimatePresence mode="wait">
@@ -205,7 +209,9 @@ export default function Home() {
                     <div className="flex gap-3 justify-center">
                       <button
                         onClick={() => setViewState("prompt")}
-                        className="px-6 py-2 bg-sorcery-purple hover:bg-sorcery-purple/80 rounded-lg text-white font-medium transition-all"
+                        className="px-6 py-2 bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 
+                                 rounded-lg text-white font-medium shadow-[0_0_10px_rgba(236,72,153,0.4)] 
+                                 hover:shadow-[0_0_15px_rgba(236,72,153,0.6)] transition-all duration-300"
                       >
                         Try Again
                       </button>
@@ -219,7 +225,10 @@ export default function Home() {
                               heroRef.current.setPrompt("");
                             }
                           }}
-                          className="px-6 py-2 bg-sorcery-blue hover:bg-sorcery-blue/80 rounded-lg text-white font-medium transition-all"
+                          className="px-6 py-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-pink-500 
+                                   rounded-lg text-white font-medium border-2 border-blue-400/70
+                                   shadow-[0_0_10px_rgba(59,130,246,0.5)] hover:shadow-[0_0_15px_rgba(59,130,246,0.7)] 
+                                   transition-all duration-300"
                         >
                           New Prompt
                         </button>
