@@ -9,7 +9,7 @@ load_dotenv()
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="FlowScribe API",
+    title="FlowWorks API",
     description="AI-powered n8n workflow generator",
     version="1.0.0",
 )
@@ -32,7 +32,7 @@ app.include_router(router)
 
 @app.get("/")
 async def root():
-    return {"message": "FlowScribe API is running"}
+    return {"message": "FlowWorks API is running"}
 
 
 @app.get("/health")

@@ -7,7 +7,8 @@ import JsonViewer from "@/components/JsonViewer";
 import DemoButton from "@/components/DemoButton";
 import VersionHistoryViewer from "@/components/VersionHistoryViewer";
 import DebugSection from "@/components/DebugSection";
-import { generateWorkflow, debugWorkflow } from "@/lib/api";
+import { generateWorkflow, debugWorkflow, StatusUpdate } from "@/lib/api";
+import StatusDisplay from "@/components/StatusDisplay";
 
 type ViewState = "prompt" | "generating" | "results" | "error";
 
@@ -18,15 +19,19 @@ export default function Home() {
   const [versionHistory, setVersionHistory] = useState<object[]>([]);
   const [isDebugging, setIsDebugging] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [statusUpdates, setStatusUpdates] = useState<StatusUpdate[]>([]);
   const heroRef = useRef<HeroRef>(null);
 
   const handleGenerate = async (prompt: string) => {
     setViewState("generating");
     setErrorMessage("");
     setOriginalPrompt(prompt);
+    setStatusUpdates([]); // Clear previous status updates
 
     try {
-      const result = await generateWorkflow(prompt);
+      const result = await generateWorkflow(prompt, (update: StatusUpdate) => {
+        setStatusUpdates((prev) => [...prev, update]);
+      });
       const newWorkflow = result.workflowJson;
 
       // Set current workflow and initialize version history
@@ -142,22 +147,27 @@ export default function Home() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-12 text-center"
+                  className="mt-12"
                 >
-                  <div className="inline-flex items-center gap-2 text-sorcery-glow">
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{
-                        duration: 1,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                      className="w-6 h-6 border-2 border-sorcery-purple border-t-transparent rounded-full"
-                    />
-                    <span className="text-xl font-medium">
-                      Crafting your workflow...
-                    </span>
+                  <div className="text-center mb-6">
+                    <div className="inline-flex items-center gap-2 text-sorcery-glow mb-4">
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
+                        className="w-6 h-6 border-2 border-sorcery-purple border-t-transparent rounded-full"
+                      />
+                      <span className="text-xl font-medium">
+                        Crafting your workflow...
+                      </span>
+                    </div>
                   </div>
+                  {statusUpdates.length > 0 && (
+                    <StatusDisplay statusUpdates={statusUpdates} />
+                  )}
                 </motion.div>
               </div>
             </motion.div>

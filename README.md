@@ -1,10 +1,10 @@
-# FlowScribe
+# FlowWorks
 
 An aesthetically beautiful, AI-powered tool that transforms natural language prompts into valid, copy-paste-able n8n workflow JSON.
 
 ## The "Digital Sorcery" Experience
 
-FlowScribe features a dark, elegant theme with smooth animations and a "magical" user experience. The UI includes:
+FlowWorks features a dark, elegant theme with smooth animations and a "magical" user experience. The UI includes:
 
 - **Live Workflow Visualization**: See your n8n workflow graph constructed in real-time
 - **Beautiful JSON Viewer**: Formatted JSON with syntax highlighting and one-click copy

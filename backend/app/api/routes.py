@@ -1,8 +1,14 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from app.services.workflow_processor import process_workflow
 from app.services.gemini_service import debug_workflow
 from app.utils.reactflow_converter import convert_n8n_to_reactflow
+from app.utils.status_emitter import StatusEmitter
+import json
+import asyncio
+import queue
+import concurrent.futures
 
 router = APIRouter()
 
@@ -22,41 +28,99 @@ class DebugRequest(BaseModel):
     bug_message: str
 
 
-@router.post("/api/generate", response_model=GenerateResponse)
+async def generate_workflow_stream(request: GenerateRequest):
+    """
+    Generate workflow with streaming status updates via Server-Sent Events.
+    """
+    if not request.prompt or not request.prompt.strip():
+        yield f"data: {json.dumps({'status': 'error', 'message': 'Prompt cannot be empty'})}\n\n"
+        return
+
+    status_emitter = StatusEmitter()
+    result_container = {"value": None, "error": None}
+    
+    def run_workflow_sync():
+        """Run workflow processing synchronously in a thread."""
+        try:
+            result = process_workflow(request.prompt.strip(), status_emitter)
+            result_container["value"] = result
+        except Exception as e:
+            result_container["error"] = str(e)
+        finally:
+            status_emitter.close()
+    
+    # Start workflow processing in a background thread
+    loop = asyncio.get_event_loop()
+    executor = concurrent.futures.ThreadPoolExecutor()
+    future = loop.run_in_executor(executor, run_workflow_sync)
+    
+    # Stream status updates while processing
+    try:
+        while not future.done():
+            try:
+                # Try to get an update (non-blocking with timeout)
+                update = status_emitter.queue.get(timeout=0.5)
+                if update.get("status") == "closed":
+                    break
+                yield f"data: {json.dumps(update)}\n\n"
+            except queue.Empty:
+                # Queue empty, check if still processing
+                await asyncio.sleep(0.1)
+                continue
+        
+        # Wait for the result
+        await future
+        
+        # Get any remaining updates
+        while True:
+            try:
+                update = status_emitter.queue.get_nowait()
+                if update.get("status") == "closed":
+                    break
+                yield f"data: {json.dumps(update)}\n\n"
+            except queue.Empty:
+                break
+        
+        # Check for errors
+        if result_container["error"]:
+            yield f"data: {json.dumps({'status': 'error', 'message': result_container['error']})}\n\n"
+            return
+        
+        result = result_container["value"]
+        if not result:
+            yield f"data: {json.dumps({'status': 'error', 'message': 'I couldn\'t find a suitable workflow template for your request. The available workflows don\'t match what you\'re looking for. Please try rephrasing your prompt or describing a different workflow.'})}\n\n"
+            return
+        
+        # Send final result
+        yield f"data: {json.dumps({'status': 'complete', 'result': result})}\n\n"
+        
+    except Exception as e:
+        error_msg = f"An error occurred while generating the workflow: {str(e)}"
+        yield f"data: {json.dumps({'status': 'error', 'message': error_msg})}\n\n"
+    finally:
+        executor.shutdown(wait=False)
+
+
+@router.post("/api/generate")
 async def generate_workflow(request: GenerateRequest):
     """
-    Generate an n8n workflow from a natural language prompt.
+    Generate an n8n workflow from a natural language prompt with streaming status updates.
 
     Args:
         request: JSON body with 'prompt' field
 
     Returns:
-        Workflow JSON and React Flow formatted data
+        Server-Sent Events stream with status updates and final result
     """
-    if not request.prompt or not request.prompt.strip():
-        raise HTTPException(status_code=400, detail="Prompt cannot be empty")
-
-    try:
-        result = process_workflow(request.prompt.strip())
-
-        if not result:
-            raise HTTPException(
-                status_code=404,
-                detail="I couldn't find a suitable workflow template for your request. The available workflows don't match what you're looking for. Please try rephrasing your prompt or describing a different workflow.",
-            )
-
-        return GenerateResponse(
-            workflowJson=result["workflowJson"], reactFlowData=result["reactFlowData"]
-        )
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Error in generate endpoint: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"An error occurred while generating the workflow: {str(e)}",
-        )
+    return StreamingResponse(
+        generate_workflow_stream(request),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )
 
 
 @router.post("/api/debug", response_model=GenerateResponse)

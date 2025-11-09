@@ -77,7 +77,7 @@ const Hero = forwardRef<HeroRef, HeroProps>(
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-6xl md:text-7xl font-bold text-center mb-8 glow-text"
             >
-              FlowScribe
+              FlowWorks
             </motion.h1>
           )}
 
