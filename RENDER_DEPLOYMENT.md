@@ -26,6 +26,7 @@ This guide will help you deploy both the Next.js frontend and FastAPI backend to
 ### Step 3: Configure Backend Service
 
 **Basic Settings:**
+
 - **Name**: `flowworks-backend` (or your preferred name)
 - **Region**: Choose closest to your users
 - **Branch**: `main` (or your default branch)
@@ -36,10 +37,12 @@ This guide will help you deploy both the Next.js frontend and FastAPI backend to
 
 **Environment Variables:**
 Click **"Add Environment Variable"** and add:
+
 - `GEMINI_API_KEY` = `your_gemini_api_key_here`
 - `PORT` = `10000` (Render will override this, but good to have)
 
 **Advanced Settings:**
+
 - **Auto-Deploy**: `Yes` (deploys on every push to main)
 - **Plan**: Free tier is fine to start
 
@@ -63,6 +66,7 @@ Click **"Add Environment Variable"** and add:
 ### Step 2: Configure Frontend Service
 
 **Basic Settings:**
+
 - **Name**: `flowworks-frontend` (or your preferred name)
 - **Region**: Same as backend (for lower latency)
 - **Branch**: `main`
@@ -73,10 +77,12 @@ Click **"Add Environment Variable"** and add:
 
 **Environment Variables:**
 Click **"Add Environment Variable"** and add:
+
 - `NEXT_PUBLIC_API_URL` = `https://your-backend-url.onrender.com`
   - Replace `your-backend-url` with your actual backend URL from Part 1
 
 **Advanced Settings:**
+
 - **Auto-Deploy**: `Yes`
 - **Plan**: Free tier is fine to start
 
@@ -110,12 +116,15 @@ After deploying the frontend, you need to update the backend CORS to allow your 
 ## Part 4: Testing Your Deployment
 
 1. **Test Backend Health:**
+
    ```
    https://your-backend-url.onrender.com/health
    ```
+
    Should return: `{"status":"healthy"}`
 
 2. **Test Frontend:**
+
    - Visit: `https://your-frontend-url.onrender.com`
    - Try generating a workflow
    - Check browser console for any errors
@@ -142,6 +151,7 @@ If you prefer automated setup, you can use the `render.yaml` file:
 ## Important Notes
 
 ### Free Tier Limitations:
+
 - Services spin down after 15 minutes of inactivity
 - First request after spin-down takes ~30-50 seconds (cold start)
 - Consider upgrading to paid plan for production use
@@ -149,14 +159,17 @@ If you prefer automated setup, you can use the `render.yaml` file:
 ### Environment Variables Summary:
 
 **Backend:**
+
 - `GEMINI_API_KEY` - Your Google Gemini API key
 - `FRONTEND_URL` - Your frontend URL (for CORS)
 - `PORT` - Automatically set by Render
 
 **Frontend:**
+
 - `NEXT_PUBLIC_API_URL` - Your backend URL
 
 ### Custom Domain (Optional):
+
 1. Go to your service settings
 2. Click **"Custom Domains"**
 3. Add your domain
@@ -167,16 +180,19 @@ If you prefer automated setup, you can use the `render.yaml` file:
 ## Troubleshooting
 
 ### Backend won't start:
+
 - Check build logs in Render dashboard
 - Verify `requirements.txt` is correct
 - Ensure `main.py` is in the `backend/` directory
 
 ### Frontend can't connect to backend:
+
 - Verify `NEXT_PUBLIC_API_URL` is correct
 - Check backend CORS settings
 - Test backend health endpoint directly
 
 ### Build fails:
+
 - Check Node.js/Python version compatibility
 - Review build logs for specific errors
 - Ensure all dependencies are in `package.json`/`requirements.txt`
@@ -197,4 +213,3 @@ If you prefer automated setup, you can use the `render.yaml` file:
 - [Render Documentation](https://render.com/docs)
 - [Render Community](https://community.render.com/)
 - Check your service logs in Render Dashboard for detailed error messages
-
