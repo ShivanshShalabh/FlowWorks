@@ -1,0 +1,33 @@
+services:
+  # Backend FastAPI Service
+  - type: web
+    name: flowworks-backend
+    runtime: python
+    region: oregon  # Change to your preferred region
+    plan: free  # Change to 'starter' or 'standard' for production
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false  # Set this manually in Render dashboard
+      - key: FRONTEND_URL
+        sync: false  # Set this after frontend is deployed
+      - key: PORT
+        value: 10000
+    healthCheckPath: /health
+
+  # Frontend Next.js Service
+  - type: web
+    name: flowworks-frontend
+    runtime: node
+    region: oregon  # Should match backend region
+    plan: free  # Change to 'starter' or 'standard' for production
+    rootDir: .
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        sync: false  # Set this to your backend URL after backend is deployed
+    healthCheckPath: /
+
