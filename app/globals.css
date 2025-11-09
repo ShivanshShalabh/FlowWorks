@@ -40,12 +40,16 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #8b5cf6;
+  background: #6d28d9;
   border-radius: 4px;
+  border: 1px solid rgba(190, 24, 93, 0.2);
+  box-shadow: 0 0 3px rgba(29, 78, 216, 0.3), inset 0 0 3px rgba(190, 24, 93, 0.2);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a78bfa;
+  background: #7c3aed;
+  border-color: rgba(190, 24, 93, 0.3);
+  box-shadow: 0 0 5px rgba(29, 78, 216, 0.4), inset 0 0 5px rgba(190, 24, 93, 0.3);
 }
 
 /* Glow effects */

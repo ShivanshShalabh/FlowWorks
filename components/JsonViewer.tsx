@@ -38,10 +38,14 @@ export default function JsonViewer({ workflowJson }: JsonViewerProps) {
         <h3 className="text-lg font-semibold text-white">Workflow JSON</h3>
         <motion.button
           onClick={handleCopy}
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: "0 0 10px rgba(190,24,93,0.4), 0 0 20px rgba(126,34,206,0.3)"
+          }}
           whileTap={{ scale: 0.95 }}
-          className="px-4 py-2 bg-sorcery-purple hover:bg-sorcery-purple/80 rounded-lg text-white text-sm font-medium
-                   transition-all duration-200 flex items-center gap-2"
+          className="px-4 py-2 bg-gradient-to-r from-pink-700 via-rose-700 to-purple-700 
+                   rounded-lg text-white text-sm font-medium shadow-[0_0_6px_rgba(190,24,93,0.3)]
+                   hover:shadow-[0_0_10px_rgba(190,24,93,0.4)] transition-all duration-300 flex items-center gap-2"
         >
           <AnimatePresence mode="wait">
             {copied ? (

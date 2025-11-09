@@ -8,6 +8,7 @@ interface HeroProps {
   onGenerate: (prompt: string) => void;
   isGenerating: boolean;
   isCompact?: boolean;
+  initialPrompt?: string;
 }
 
 export interface HeroRef {
@@ -16,9 +17,19 @@ export interface HeroRef {
 }
 
 const Hero = forwardRef<HeroRef, HeroProps>(
-  ({ onGenerate, isGenerating, isCompact = false }, ref) => {
-    const [prompt, setPrompt] = useState("");
+  (
+    { onGenerate, isGenerating, isCompact = false, initialPrompt = "" },
+    ref
+  ) => {
+    const [prompt, setPrompt] = useState(initialPrompt);
     const inputRef = useInputRef<HTMLInputElement>(null);
+
+    // Update prompt when initialPrompt changes (e.g., when entering generating state)
+    useEffect(() => {
+      if (initialPrompt) {
+        setPrompt(initialPrompt);
+      }
+    }, [initialPrompt]);
 
     useImperativeHandle(ref, () => ({
       setPrompt: (value: string) => {
@@ -148,9 +159,9 @@ const Hero = forwardRef<HeroRef, HeroProps>(
                 disabled={isGenerating || !prompt.trim()}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-pink-700 via-rose-700 to-purple-700 
                        rounded-lg text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed
-                       shadow-[0_0_10px_rgba(236,72,153,0.4)] hover:shadow-[0_0_15px_rgba(236,72,153,0.6)] transition-all duration-300"
+                       shadow-[0_0_8px_rgba(190,24,93,0.3)] hover:shadow-[0_0_12px_rgba(190,24,93,0.4)] transition-all duration-300"
               >
                 {isGenerating ? "Generating..." : "Generate Workflow"}
               </motion.button>

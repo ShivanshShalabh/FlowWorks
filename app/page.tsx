@@ -147,6 +147,7 @@ export default function Home() {
                   onGenerate={handleGenerate}
                   isGenerating={true}
                   isCompact={true}
+                  initialPrompt={originalPrompt}
                 />
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -191,6 +192,7 @@ export default function Home() {
                   onGenerate={handleGenerate}
                   isGenerating={false}
                   isCompact={true}
+                  initialPrompt={originalPrompt}
                 />
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -209,9 +211,9 @@ export default function Home() {
                     <div className="flex gap-3 justify-center">
                       <button
                         onClick={() => setViewState("prompt")}
-                        className="px-6 py-2 bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 
-                                 rounded-lg text-white font-medium shadow-[0_0_10px_rgba(236,72,153,0.4)] 
-                                 hover:shadow-[0_0_15px_rgba(236,72,153,0.6)] transition-all duration-300"
+                        className="px-6 py-2 bg-gradient-to-r from-pink-700 via-rose-700 to-purple-700 
+                                 rounded-lg text-white font-medium shadow-[0_0_8px_rgba(190,24,93,0.3)] 
+                                 hover:shadow-[0_0_12px_rgba(190,24,93,0.4)] transition-all duration-300"
                       >
                         Try Again
                       </button>
@@ -225,9 +227,9 @@ export default function Home() {
                               heroRef.current.setPrompt("");
                             }
                           }}
-                          className="px-6 py-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-pink-500 
-                                   rounded-lg text-white font-medium border-2 border-blue-400/70
-                                   shadow-[0_0_10px_rgba(59,130,246,0.5)] hover:shadow-[0_0_15px_rgba(59,130,246,0.7)] 
+                          className="px-6 py-2 bg-gradient-to-r from-blue-700 via-indigo-700 to-pink-700 
+                                   rounded-lg text-white font-medium border-2 border-blue-600/50
+                                   shadow-[0_0_8px_rgba(29,78,216,0.3)] hover:shadow-[0_0_12px_rgba(29,78,216,0.4)] 
                                    transition-all duration-300"
                         >
                           New Prompt

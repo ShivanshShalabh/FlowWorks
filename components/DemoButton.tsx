@@ -12,9 +12,9 @@ export default function DemoButton({ onDemoClick }: DemoButtonProps) {
       onClick={onDemoClick}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="px-6 py-3 bg-gradient-to-r from-blue-500 via-indigo-500 to-pink-500 rounded-lg 
-               text-white font-medium border-2 border-blue-400/70
-               shadow-[0_0_15px_rgba(59,130,246,0.6)] hover:shadow-[0_0_20px_rgba(59,130,246,0.8)] 
+      className="px-6 py-3 bg-gradient-to-r from-blue-700 via-indigo-700 to-pink-700 rounded-lg 
+               text-white font-medium border-2 border-blue-600/50
+               shadow-[0_0_10px_rgba(29,78,216,0.3)] hover:shadow-[0_0_15px_rgba(29,78,216,0.4)] 
                transition-all duration-300 flex items-center gap-2"
     >
       <svg
