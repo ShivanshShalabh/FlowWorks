@@ -22,7 +22,7 @@ const Hero = forwardRef<HeroRef, HeroProps>(
     ref
   ) => {
     const [prompt, setPrompt] = useState(initialPrompt);
-    const inputRef = useInputRef<HTMLInputElement>(null);
+    const inputRef = useInputRef<HTMLTextAreaElement>(null);
 
     // Update prompt when initialPrompt changes (e.g., when entering generating state)
     useEffect(() => {
@@ -30,6 +30,17 @@ const Hero = forwardRef<HeroRef, HeroProps>(
         setPrompt(initialPrompt);
       }
     }, [initialPrompt]);
+
+    // Auto-resize textarea when prompt changes
+    useEffect(() => {
+      if (inputRef.current) {
+        inputRef.current.style.height = "auto";
+        inputRef.current.style.height = `${Math.min(
+          inputRef.current.scrollHeight,
+          192
+        )}px`;
+      }
+    }, [prompt]);
 
     useImperativeHandle(ref, () => ({
       setPrompt: (value: string) => {
@@ -143,23 +154,39 @@ const Hero = forwardRef<HeroRef, HeroProps>(
                   />
                 </svg>
               </div>
-              <input
+              <textarea
                 ref={inputRef}
-                type="text"
+                style={{
+                  height: "auto",
+                  overflow: "auto",
+                  minHeight: "fit-content",
+                }}
                 value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+                onChange={(e) => {
+                  setPrompt(e.target.value);
+                  // Auto-resize
+                  const target = e.target;
+                  target.style.height = "auto";
+                  target.style.height = `${Math.min(
+                    target.scrollHeight,
+                    192
+                  )}px`;
+                }}
                 placeholder="Describe your workflow in natural language..."
                 disabled={isGenerating}
-                className="w-full pl-12 pr-36 py-4 bg-sorcery-darker border-2 border-blue-500/50 rounded-lg 
+                rows={1}
+                className="w-full pl-12 pr-4 py-4 bg-sorcery-darker border-2 border-blue-500/50 rounded-lg 
                        text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 
-                       focus:shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-300 disabled:opacity-50"
+                       focus:shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-300 disabled:opacity-50
+              resize-none overflow-y-auto min-h-[3.5rem] max-h-48"
               />
+            </div>
+            <div className="flex justify-end mt-3">
               <motion.button
                 type="submit"
                 disabled={isGenerating || !prompt.trim()}
-                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-pink-700 via-rose-700 to-purple-700 
+                className="px-6 py-2 bg-gradient-to-r from-pink-700 via-rose-700 to-purple-700 
                        rounded-lg text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed
                        shadow-[0_0_8px_rgba(190,24,93,0.3)] hover:shadow-[0_0_12px_rgba(190,24,93,0.4)] transition-all duration-300"
               >
