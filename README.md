@@ -2,15 +2,6 @@
 
 An AI-powered tool that transforms natural language prompts into valid, copy-paste-able n8n workflow JSON.
 
-## The "Digital Sorcery" Experience
-
-FlowWorks features a dark, elegant theme with smooth animations and a "magical" user experience. The UI includes:
-
-- **Live Workflow Visualization**: See your n8n workflow graph constructed in real-time
-- **Beautiful JSON Viewer**: Formatted JSON with syntax highlighting and one-click copy
-- **AI-Powered Generation**: Uses Google Gemini API to fetch and modify real n8n templates
-- **Smooth Animations**: Framer Motion powered transitions and effects
-
 ## Tech Stack
 
 ### Frontend
