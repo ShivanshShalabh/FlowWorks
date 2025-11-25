@@ -1,6 +1,6 @@
-# FlowWorks
+<img width="1081" height="305" alt="image" src="https://github.com/user-attachments/assets/ed36cda3-20da-47a9-9ee4-7ad9a7c655aa" />
 
-An AI-powered tool that transforms natural language prompts into valid, copy-paste-able n8n workflow JSON.
+# <center> An AI-powered tool that transforms natural language prompts into copy-paste-able n8n workflow JSON.</center>
 
 ## Tech Stack
 
