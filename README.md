@@ -1,6 +1,8 @@
 <img width="1081" height="305" alt="image" src="https://github.com/user-attachments/assets/ed36cda3-20da-47a9-9ee4-7ad9a7c655aa" />
 
-# <center> An AI-powered tool that transforms natural language prompts into copy-paste-able n8n workflow JSON.</center>
+> A submission to UBHackopoly
+# An AI-powered tool that transforms natural language prompts into copy-paste-able n8n workflow JSON.
+
 
 ## Tech Stack
 
